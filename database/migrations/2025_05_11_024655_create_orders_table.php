@@ -16,7 +16,8 @@ return new class extends Migration
             $table->date('order_date'); 
             $table->decimal('total_amount', 10, 2)->default(0.00); 
             $table->enum('status', ['pending', 'processing', 'completed', 'cancelled'])
-                  ->default('pending'); 
+                  ->default('pending');
+            $table->string('tracking_number')->nullable(); 
             $table->timestamps();           
             
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');

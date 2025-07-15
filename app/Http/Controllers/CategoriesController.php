@@ -5,69 +5,66 @@ namespace App\Http\Controllers;
 use App\Models\Categories;
 use App\Http\Requests\StoreCategoriesRequest;
 use App\Http\Requests\UpdateCategoriesRequest;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class CategoriesController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Store a newly created category.
      */
     public function store(StoreCategoriesRequest $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Categories $categories)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Categories $categories)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateCategoriesRequest $request, Categories $categories)
-    {
-        $path = $request->file('image')->store('categories', 'public');
+        // simpan file gambar (selalu ada karena sudah divalidasi)
+        $path = $request->file('image')
+            ->store('categories', 'public');     // ex: categories/abc.jpg
 
         Categories::create([
-            'name'  => $request->name,
-            'slug'  => string::slug($request->name),
-            'image' => $path,
+            'name'        => $request->name,
+            'slug'        => Str::slug($request->name),
+            'image'       => $path,                         // simpan path relatif
             'description' => $request->description,
         ]);
+
+        return back()->with('success', 'Kategori berhasil ditambahkan');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Update an existing category.
      */
-    public function destroy(Categories $categories)
+    public function update(UpdateCategoriesRequest $request, Categories $category)
     {
-        //
+        $data = [
+            'name'        => $request->name,
+            'slug'        => Str::slug($request->name),
+            'description' => $request->description,
+        ];
+
+        // jika user meng‑upload gambar baru
+        if ($request->hasFile('image')) {
+            // hapus gambar lama jika ada
+            if ($category->image && Storage::disk('public')->exists($category->image)) {
+                Storage::disk('public')->delete($category->image);
+            }
+
+            // upload gambar baru
+            $data['image'] = $request->file('image')
+                ->store('categories', 'public');
+        }
+
+        $category->update($data);
+
+        return back()->with('success', 'Kategori berhasil diperbarui');
+    }
+
+    public function rules(): array
+    {
+        return [
+            'name'        => 'required|string|max:100',
+            'description' => 'nullable|string|max:255',
+            'image'       => $this->isMethod('post')
+                ? 'required|image|mimes:jpg,jpeg,png,webp|max:2048'
+                : 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ];
     }
 }

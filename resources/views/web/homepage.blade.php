@@ -78,26 +78,6 @@
         </div>
     </section>
 
-    <!-- Trusted Brands Section -->
-    <section class="trusted-brands py-5 bg-light">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-3">
-                    <h4 class="text-muted mb-0">We are<br>trusted by</h4>
-                </div>
-                <div class="col-md-9">
-                    <div class="brands-carousel d-flex justify-content-around align-items-center">
-                        <div class="brand-logo">Beauty Salon</div>
-                        <div class="brand-logo">Skin Care</div>
-                        <div class="brand-logo">Spa & Wellness</div>
-                        <div class="brand-logo">Beauty Essentials</div>
-                        <div class="brand-logo">Cosmetics</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Categories Section -->
     <section class="categories-section py-5">
         <div class="container">
