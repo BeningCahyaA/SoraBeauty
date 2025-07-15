@@ -9,9 +9,8 @@ class CheckoutController extends Controller
 {
     public function index()
     {
-        // Get the cart from the session
-        $cart = Session::get('cart', []);       // array, default []
-        $total = collect($cart)                 // ubah ke Collection
+        $cart = Session::get('cart', []); 
+        $total = collect($cart)
             ->sum(fn($item) => $item['price'] * $item['qty']);
 
         return view('web.checkout', compact('cart', 'total'));
@@ -19,7 +18,7 @@ class CheckoutController extends Controller
 
     public function process(Request $request)
     {
-        // Validate the request
+        
         $request->validate([
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
@@ -27,9 +26,6 @@ class CheckoutController extends Controller
             'total' => 'required|string',
         ]);
 
-        // Here you would typically handle the payment processing logic
-
-        // Clear the cart after payment
         Session::forget('cart');
 
         return redirect()->route('products.index')->with('success', 'Pembayaran selesai, tunggu pesananmu datang!');

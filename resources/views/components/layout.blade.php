@@ -104,23 +104,23 @@
         <div class="container p-3">
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <h5 class="mb-3">E-Commerce Kecantikan</h5>
-                    <p class="small">Belanja mudah, cepat, dan aman di toko online kami. Temukan produk favorit Anda dengan harga terbaik.</p>
+                    <h5 class="mb-3">Sora Beauty Store</h5>
+                    <p class="small">Lebih dari Sekadar Produk Kecantikan. Sora Beauty hadir untuk merawat dan mengekspresikan kecantikan alami setiap remaja Indonesia.</p>
                 </div>
                 <div class="col-md-3 mb-3">
                     <h6 class="mb-3">Navigasi</h6>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-white text-decoration-none">Beranda</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Produk</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Kategori</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Kontak</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Home</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Products</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Categories</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Contact</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <h6 class="mb-3">Kontak Kami</h6>
+                    <h6 class="mb-3">Contact Kami</h6>
                     <ul class="list-unstyled small">
-                        <li><i class="bi bi-envelope"></i> info@ecommerce.com</li>
-                        <li><i class="bi bi-telephone"></i> +62 856 6100 994</li>
+                        <li><i class="bi bi-envelope"></i> sorabeauty@ecommerce.com</li>
+                        <li><i class="bi bi-telephone"></i> +62 857 2700 994</li>
                         <li><i class="bi bi-geo-alt"></i> Tegal, Indonesia</li>
                     </ul>
                 </div>

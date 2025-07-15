@@ -1,288 +1,427 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sora Beauty - Produk Kecantikan</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary-color: #ff85a2;
-            --secondary-color: #f7d6e0;
-            --accent-color: #ffb6c1;
-            --dark-color: #5e2042;
-            --light-color: #fff9fb;
-        }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .beauty-navbar {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%) !important;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            padding: 10px 0;
-        }
-
-        .brand-logo {
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            font-size: 28px;
-            color: white;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-            display: flex;
-            align-items: center;
-        }
-
-        .brand-logo i {
-            margin-right: 10px;
-            font-size: 24px;
-        }
-
-        .nav-link {
-            font-weight: 500;
-            color: white !important;
-            margin: 0 8px;
-            padding: 8px 15px !important;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-link:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .nav-link.active {
-            background-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 5px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: white;
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover::after {
-            width: 60%;
-        }
-
-        .btn-beauty {
-            border-radius: 20px;
-            padding: 8px 20px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .btn-login {
-            background-color: transparent;
-            border: 2px solid white;
-            color: white;
-        }
-
-        .btn-login:hover {
-            background-color: white;
-            color: var(--primary-color);
-        }
-
-        .btn-register {
-            background-color: white;
-            color: var(--primary-color);
-            border: 2px solid white;
-        }
-
-        .btn-beauty i {
-            margin-right: 5px;
-        }
-
-        .btn-register:hover {
-            background-color: transparent;
-            color: white;
-        }
-
-        .cart-icon:hover {
-            transform: scale(1.1);
-            transition: transform 0.2s ease;
-        }
-
-        .cart-count {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background-color: #5e2042;
-        }
-
-        .dropdown-menu {
-            border-radius: 10px;
-            border: none;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            margin-top: 10px !important;
-        }
-
-        .dropdown-item {
-            padding: 8px 20px;
-            transition: all 0.2s ease;
-        }
-
-        .dropdown-item:hover {
-            background-color: var(--secondary-color);
-            color: var(--dark-color);
-        }
-
-        .user-avatar {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 8px;
-            border: 2px solid white;
-        }
-
-        @media (max-width: 992px) {
-            .navbar-collapse {
-                padding: 20px 0;
-                background-color: var(--primary-color);
-                border-radius: 10px;
-                margin-top: 10px;
-            }
-
-            .nav-link {
-                margin: 5px 0;
-            }
-
-            .btn-group {
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .btn-beauty {
-                width: 100%;
-            }
-        }
-    </style>
-</head>
-
-<body>
-    <nav class="navbar navbar-expand-lg beauty-navbar">
-        <div class="container">
-            <a class="navbar-brand brand-logo" href="/">
-                <i class="fas fa-heart"></i>Sora Beauty
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-expanded="false">
-                <span class="navbar-toggler-icon" style="color: white;">
-                    <i class="fas fa-bars"></i>
-                </span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/">Beranda</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/categories">Kategori</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/products">Produk</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/treatments">Perawatan</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/tips">Tips Kecantikan</a>
-                    </li>
-                </ul>
-
-                <!-- <div class="cart-icon me-3">
-                    <i class="fas fa-shopping-bag fa-lg" style="color: white;"></i>
-                    <span class="cart-count">0</span>
-                </div>
-                ======= -->
-                <a href="{{ route('cart.index') }}" class="cart-icon me-3 text-decoration-none">
-                    <i class="fas fa-shopping-bag fa-lg" style="color: white;"></i>
-                    <span class="cart-count">{{ auth()->guard('customer')->check() ? count(session('cart') ?? []) : 0 }}</span>
-                </a>
-
-                @if(auth()->guard('customer')->check())
-                <div class="dropdown">
-                    <button class="btn btn-light dropdown-toggle d-flex align-items-center" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/20efa19e-4344-4883-aca1-79145f85900a.png" alt="Foto profil user" class="user-avatar">
-                        <span>{{ Auth::guard('customer')->user()->name }}</span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profil Saya</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-heart me-2"></i>Favorite</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-history me-2"></i>Riwayat Order</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <form method="POST" action="{{ route('customer.logout') }}">
-                                @csrf
-                                <button type="submit" class="dropdown-item text-danger">
-                                    <i class="fas fa-sign-out-alt me-2"></i>Logout
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-                @else
-                <a class="btn btn-outline-light btn-beauty btn-login me-2" href="{{ route('customer.login') }}">
-                    <i class="fas fa-sign-in-alt me-1"></i> Login
-                </a>
-                <a class="btn btn-light btn-beauty btn-register" href="{{ route('customer.register') }}">
-                    <i class="fas fa-user-plus me-1"></i> Register
-                </a>
-                @endif
+<!-- Modern Beauty Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+    <div class="container">
+        <!-- Brand Logo -->
+        <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
+            <div class="brand-logo-container me-2">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="20" cy="20" r="18" fill="url(#gradient1)"/>
+                    <path d="M12 20C12 15.6 15.6 12 20 12C24.4 12 28 15.6 28 20C28 24.4 24.4 28 20 28C15.6 28 12 24.4 12 20Z" fill="white" fill-opacity="0.8"/>
+                    <defs>
+                        <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#ff6b6b"/>
+                            <stop offset="100%" style="stop-color:#4ecdc4"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
             </div>
+            <span class="brand-text">Sora Beauty</span>
+        </a>
+
+        <!-- Mobile Toggle Button -->
+        <button class="navbar-toggler border-0 custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Links -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link nav-link-modern {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">
+                        Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-modern {{ request()->is('products*') ? 'active' : '' }}" href="{{ url('/products') }}">
+                        Products
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-modern {{ request()->is('categories*') ? 'active' : '' }}" href="{{ url('/categories') }}">
+                        Categories
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-modern {{ request()->is('about') ? 'active' : '' }}" href="{{ url('/about') }}">
+                        About
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-modern {{ request()->is('contact') ? 'active' : '' }}" href="{{ url('/contact') }}">
+                        Contact
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Right Side Navigation -->
+            <ul class="navbar-nav ms-auto align-items-center">
+                <!-- Search -->
+                <li class="nav-item me-3">
+                    <div class="search-container">
+                        <form class="d-flex" action="{{ url('/search') }}" method="GET">
+                            <div class="input-group search-input-group">
+                                <input type="text" class="form-control search-input" placeholder="Search products..." name="q" value="{{ request('q') }}">
+                                <button class="btn btn-search" type="submit">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="11" cy="11" r="8"></circle>
+                                        <path d="m21 21-4.35-4.35"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </li>
+
+                <!-- Cart -->
+                <li class="nav-item me-3">
+                    <a href="{{ url('/cart') }}" class="nav-link position-relative cart-link">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        <span class="cart-badge">3</span>
+                    </a>
+                </li>
+
+                <!-- Authentication Links -->
+                @guest
+                    <li class="nav-item me-2">
+                        <a class="btn btn-outline-primary btn-auth" href="{{ route('login') }}">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                                <polyline points="10,17 15,12 10,7"></polyline>
+                                <line x1="15" y1="12" x2="3" y2="12"></line>
+                            </svg>
+                            Login
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-primary btn-auth" href="{{ route('register') }}">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            Register
+                        </a>
+                    </li>
+                @else
+                    <!-- User Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle user-dropdown" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <div class="user-avatar">
+                                <img src="{{ Auth::user()->avatar ?? 'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/2091e695636919.5eb96c04456ac.jpg=' . strtoupper(substr(Auth::user()->name, 0, 1)) }}" 
+                                     alt="{{ Auth::user()->name }}" class="rounded-circle">
+                            </div>
+                            <span class="user-name">{{ Auth::user()->name }}</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu">
+                            <li><h6 class="dropdown-header">{{ Auth::user()->name }}</h6></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item text-danger" href="{{ route('logout') }}" 
+                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                        <polyline points="16,17 21,12 16,7"></polyline>
+                                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                                    </svg>
+                                    Logout
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                @endguest
+            </ul>
         </div>
-        </div>
-    </nav>
+    </div>
+</nav>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Animasi untuk navbar link
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-2px)';
-            });
+<style>
+/* Navbar Styles */
+.navbar {
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 0.8rem 0;
+}
 
-            link.addEventListener('mouseleave', function() {
-                this.style.transform = '';
-            });
-        });
+.brand-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
 
-        // Smooth scroll untuk semua link
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
+.nav-link-modern {
+    font-weight: 500;
+    color: #333 !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    position: relative;
+}
 
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
+.nav-link-modern:hover {
+    background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+    color: white !important;
+    transform: translateY(-2px);
+}
 
-        // Update cart count (simulasi)
-        setInterval(function() {
-            document.querySelector('.cart-count').style.transform = 'scale(1.1)';
-            setTimeout(function() {
-                document.querySelector('.cart-count').style.transform = '';
-            }, 300);
-        }, 5000);
-    </script>
-</body>
+.nav-link-modern.active {
+    background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+    color: white !important;
+}
 
-</html>
+/* Search Styles */
+.search-container {
+    position: relative;
+}
+
+.search-input-group {
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.search-input {
+    border: none;
+    padding: 0.5rem 1rem;
+    background: #f8f9fa;
+    border-radius: 25px 0 0 25px;
+    width: 250px;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    box-shadow: none;
+    background: white;
+    outline: none;
+}
+
+.btn-search {
+    background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+    border: none;
+    padding: 0.5rem 1rem;
+    color: white;
+    border-radius: 0 25px 25px 0;
+    transition: all 0.3s ease;
+}
+
+.btn-search:hover {
+    background: linear-gradient(135deg, #ff5252, #26a69a);
+    color: white;
+}
+
+/* Cart Styles */
+.cart-link {
+    position: relative;
+    padding: 0.5rem !important;
+    border-radius: 50%;
+    background: #f8f9fa;
+    color: #333 !important;
+    transition: all 0.3s ease;
+}
+
+.cart-link:hover {
+    background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+    color: white !important;
+    transform: translateY(-2px);
+}
+
+.cart-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ff6b6b;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+/* Auth Buttons */
+.btn-auth {
+    border-radius: 25px;
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    border: 2px solid transparent;
+}
+
+.btn-outline-primary.btn-auth {
+    border-color: #ff6b6b;
+    color: #ff6b6b;
+}
+
+.btn-outline-primary.btn-auth:hover {
+    background: #ff6b6b;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-primary.btn-auth {
+    background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+    border: none;
+}
+
+.btn-primary.btn-auth:hover {
+    background: linear-gradient(135deg, #ff5252, #26a69a);
+    transform: translateY(-2px);
+}
+
+/* User Dropdown */
+.user-dropdown {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem !important;
+    border-radius: 25px;
+    background: #f8f9fa;
+    color: #333 !important;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.user-dropdown:hover {
+    background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+    color: white !important;
+}
+
+.user-avatar {
+    width: 35px;
+    height: 35px;
+    margin-right: 0.5rem;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid white;
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user-name {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.user-dropdown-menu {
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    padding: 0.5rem 0;
+    min-width: 200px;
+}
+
+.user-dropdown-menu .dropdown-item {
+    padding: 0.7rem 1.5rem;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.user-dropdown-menu .dropdown-item:hover {
+    background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+    color: white;
+}
+
+.user-dropdown-menu .dropdown-item.text-danger:hover {
+    background: #dc3545;
+    color: white;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 991px) {
+    .search-input {
+        width: 200px;
+    }
+    
+    .navbar-nav {
+        padding: 1rem 0;
+    }
+    
+    .nav-item {
+        margin: 0.2rem 0;
+    }
+    
+    .btn-auth {
+        width: 100%;
+        justify-content: center;
+        margin: 0.2rem 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .search-input {
+        width: 150px;
+    }
+    
+    .user-name {
+        display: none;
+    }
+    
+    .brand-text {
+        font-size: 1.2rem;
+    }
+}
+
+/* Custom Toggler */
+.custom-toggler {
+    border: none;
+    padding: 0.5rem;
+    border-radius: 8px;
+    background: #f8f9fa;
+}
+
+.custom-toggler:focus {
+    box-shadow: none;
+}
+
+/* Smooth Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.navbar-collapse {
+    animation: fadeIn 0.3s ease;
+}
+
+/* Notification Badge Animation */
+.cart-badge {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+</style>

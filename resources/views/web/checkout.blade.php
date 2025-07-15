@@ -1,7 +1,15 @@
 <x-layout>
     <x-slot name="title">Pembayaran</x-slot>
+
+    <!-- Hero Section -->
+    <section class="checkout-hero">
+        <div class="container">
+            <h1 class="hero-title">Pembayaran</h1>
+            <p class="hero-subtitle">Silakan lengkapi informasi di bawah ini untuk menyelesaikan pembelian Anda.</p>
+        </div>
+    </section>
+
     <div class="container my-5">
-        <h1 class="mb-4">Pembayaran</h1>
         <form action="{{ route('checkout.process') }}" method="POST">
             @csrf
             <div class="mb-3">
@@ -28,4 +36,41 @@
             <button type="submit" class="btn btn-primary">Checkout</button>
         </form>
     </div>
+
+    <style>
+        /* Hero Section */
+        .checkout-hero {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        /* Form Styles */
+        .form-label {
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+    </style>
 </x-layout>
