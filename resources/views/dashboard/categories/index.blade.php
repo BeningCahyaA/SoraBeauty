@@ -100,7 +100,9 @@
             </tbody>
         </table>
         <div class="mt-3">
+            @if(method_exists($categories, 'links'))
             {{ $categories->links() }}
+            @endif
         </div>
     </div>
 

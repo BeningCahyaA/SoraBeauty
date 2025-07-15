@@ -25,7 +25,7 @@
                                     <span class="rating-text ms-2">52 Reviews</span>
                                 </div>
                                 <div class="price mb-3">
-                                    <span class="current-price">$49.99</span>
+                                    <span class="current-price">Rp295.000</span>
                                 </div>
                                 <div class="quantity-controls d-flex align-items-center mb-3">
                                     <button class="btn btn-outline-secondary btn-sm me-2">-</button>

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Categories;
 use Illuminate\Http\Request;
+use App\Models\Categories;
 use Illuminate\Support\Facades\Validator;
 
 class ProductCategoryController extends Controller
@@ -11,19 +11,13 @@ class ProductCategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $categories = Categories::query()
-            ->when($request->filled('q'), function ($query) use ($request) {
-                $query->where('name', 'like', '%' . $request->q . '%')
-                    ->orWhere('description', 'like', '%' . $request->q .
-                        '%');
-            })
-            ->paginate(10);
+        $categories = Categories::all();
+
         return view('dashboard.categories.index', [
-            'categories' => $categories,
-            'q' => $request->q
-        ]);
+            'categories'=>$categories
+        ])->with('q', request()->get('q', ''));
     }
 
     /**
@@ -39,48 +33,37 @@ class ProductCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        /**
-         * cek validasi input
-         */
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
-            'slug' => 'required|string|max:255|unique:product_categories,slug',
+            'slug' => 'required|max:255|unique:product_categories,slug',
             'description' => 'nullable|max:1000',
         ]);
-        /**
-         * jika validasi gagal,
-         * maka redirect kembali dengan pesan error
-         */
+
         if ($validator->fails()) {
-            return redirect()->back()->with(
-                [
-                    'errors' => $validator->errors(),
-                    'errorMessage' => 'Validasi Error, Silahkan
-   lengkapi data terlebih dahulu'
-                ]
-            );
+            return redirect()->back()
+                ->witherrors($validator)
+                ->with('errorMessage', 'Validasi gagal')
+                ->withInput();
         }
-        //jika validasi berhasil,\
-        //maka simpan data ke database
-        $category = new Categories;
+
+        $category= new Categories();
         $category->name = $request->input('name');
         $category->slug = $request->input('slug');
         $category->description = $request->input('description');
 
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '_' .
-                $image->getClientOriginalName();
-            $imagePath = $image->storeAs(
-                'uploads/categories',
-                $imageName,
-                'public'
-            );
-            $category->image = $imagePath;
-        }
+        if ($request->hasFile('image')) { 
+            $image = $request->file('image'); 
+            $imageName = time() . '_' . 
+            $image->getClientOriginalName(); 
+            $imagePath = $image->storeAs('uploads/categories', $imageName, 'public'); 
+            $category->image = $imagePath; 
+        } 
+
         $category->save();
-        return redirect()->route('categories.index')
-            ->with('successMessage', 'Data Berhasil Disimpan');
+
+        return redirect()->route ('categories.index')
+            ->with('success', 'Data berhasil disimpan');
     }
 
     /**
@@ -88,7 +71,7 @@ class ProductCategoryController extends Controller
      */
     public function show(string $id)
     {
-        $category = Categories::find($id);
+        //
     }
 
     /**
@@ -96,7 +79,8 @@ class ProductCategoryController extends Controller
      */
     public function edit(string $id)
     {
-        $category = Categories::find($id);
+        $category = Categories::findOrFail($id);
+
         return view('dashboard.categories.edit', [
             'category' => $category
         ]);
@@ -107,45 +91,24 @@ class ProductCategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        /**
-         * cek validasi input
-         */
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255',
-            'description' => 'required'
-        ]);
-        /**
-         * jika validasi gagal,
-         * maka redirect kembali dengan pesan error
-         */
-        if ($validator->fails()) {
-            return redirect()->back()->with(
-                [
-                    'errors' => $validator->errors(),
-                    'errorMessage' => 'Validasi Error, Silahkan
-   lengkapi data terlebih dahulu'
-                ]
-            );
-        }
-        $category = Categories::find($id);
-        $category->name = $request->name;
-        $category->slug = $request->slug;
-        $category->description = $request->description;
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '_' .
-                $image->getClientOriginalName();
-            $imagePath = $image->storeAs(
-                'uploads/categories',
-                $imageName,
-                'public'
-            );
-            $category->image = $imagePath;
-        }
+        $category=  Categories::find($id);
+        $category->name = $request->input('name');
+        $category->slug = $request->input('slug');
+        $category->description = $request->input('description');
+
+        if ($request->hasFile('image')) { 
+            $image = $request->file('image'); 
+            $imageName = time() . '_' . 
+            $image->getClientOriginalName(); 
+            $imagePath = $image->storeAs('uploads/categories', $imageName, 'public'); 
+            $category->image = $imagePath; 
+        } 
+
         $category->save();
-        return redirect()->route('categories.index')
-            ->with('successMessage', 'Data Berhasil Diperbarui');
+
+        return redirect()->route ('categories.index')
+            ->with('success', 'Data berhasil disimpan');
+
     }
 
     /**
@@ -155,11 +118,9 @@ class ProductCategoryController extends Controller
     {
         $category = Categories::find($id);
         $category->delete();
-        return redirect()->back()
-            ->with(
-                [
-                    'successMessage' => 'Data Berhasil Dihapus'
-                ]
-            );
+
+        return redirect()->route('categories.index')
+            ->with('success', 'Data berhasil dihapus');
     }
+    
 }

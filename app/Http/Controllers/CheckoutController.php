@@ -17,14 +17,18 @@ class CheckoutController extends Controller
     }
 
     public function process(Request $request)
-    {
-        
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'phone' => 'required|string|max:15',
-            'total' => 'required|string',
-        ]);
+{
+    $cart = session('cart', []);
+    $total = collect($cart)->sum(fn ($i) => $i['price'] * $i['qty']);
+
+    // abaikan $request->total, pakai $total yang fresh
+    session()->flash('checkout', [
+        'customer_id' => auth('customer')->id(),
+        'total'       => $total,
+        'name'        => $request->name,
+        'address'     => $request->address,
+        'phone'       => $request->phone,
+    ]);
 
         Session::forget('cart');
 
