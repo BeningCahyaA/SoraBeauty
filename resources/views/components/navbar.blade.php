@@ -42,11 +42,6 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-link-modern {{ request()->is('about') ? 'active' : '' }}" href="{{ url('/about') }}">
-                        About
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link nav-link-modern {{ request()->is('contact') ? 'active' : '' }}" href="{{ url('/contact') }}">
                         Contact
                     </a>

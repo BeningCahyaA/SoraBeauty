@@ -7,9 +7,6 @@ use App\Models\Categories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Validator;
-
 
 
 class ProductController extends Controller
@@ -27,68 +24,65 @@ class ProductController extends Controller
 
     public function create()
     {
-        $categories = Categories::all();
+        $categories = Categories::all(); // Ambil semua kategori
         return view('dashboard.products.create', compact('categories'));
     }
 
-
     public function store(Request $request)
     {
-        $messages = [
-            'name.unique' => 'Nama produk sudah digunakan, silakan gunakan nama lain.',
-
-        ];
-
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255|unique:products,name',  // Tambah unique di sini
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
             'category_slug' => 'required|string|exists:product_categories,slug',
             'slug' => 'required|string|max:255|unique:products,slug',
-            'sku' => 'required|string|max:50|unique:products,sku',
-            'description' => 'nullable|string',
+            'description' => 'required|string',
             'price' => 'required|numeric',
             'stock' => 'required|numeric',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
+        // Ambil ID kategori dari slug
+        $category = Categories::where('slug', $request->category_slug)->first();
 
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        $validated = $validator->validated();
-
-        $category = Categories::where('slug', $validated['category_slug'])->first();
-
-        $imageUrl = null;
+        // Menyimpan file gambar langsung ke folder public/images
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $imagePath = public_path('images');
-            $image->move($imagePath, $imageName);
-            $imageUrl = 'images/' . $imageName;
+            $image      = $request->file('image');
+            $imageName  = time() . '.' . $image->extension();
+            $folder     = 'product/images';                // ← ubah sesuai keinginan
+            $image->move(public_path($folder), $imageName);
+            $imageUrl   = $folder . '/' . $imageName; // Folder penyimpanan gambar
+
+            // Menyimpan path gambar relatif
+            $imageUrl  = 'product/images/' . $imageName;
         }
 
+        // Buat SKU unik
+        $sku = strtoupper(Str::random(8));
+        while (Product::where('sku', $sku)->exists()) {
+            $sku = strtoupper(Str::random(8));
+        }
+
+        // Buat slug produk dari nama produk
+        $slug = Str::slug($request->slug);
+        while (Product::where('slug', $slug)->exists()) {
+            $slug .= '-' . Str::random(3); // optional: jika ingin tetap menjamin unik
+        }
+
+
+        // Simpan produk
         Product::create([
-            'name' => $validated['name'],
-            'slug' => Str::slug($validated['slug']),
-            'description' => $validated['description'],
-            'price' => $validated['price'],
-            'stock' => $validated['stock'],
-            'sku' => $validated['sku'],
+            'name' => $request->name,
+            'slug' => $slug,
+            'description' => $request->description,
+            'price' => $request->price,
+            'stock' => $request->stock,
+            'sku' => $sku,
             'product_category_id' => $category->id,
             'image_url' => $imageUrl,
-            'is_active' => ((int) $validated['stock'] > 0),
+            'is_active' => ((int) $request->stock > 0),
         ]);
 
+
         return redirect()->route('products.index')->with('successMessage', 'Data Berhasil Disimpan');
-    }
-
-
-    public function show(Product $product)
-    {
-        return view('dashboard.products.index', compact('product'));
     }
 
     public function edit(Product $product)
@@ -100,55 +94,58 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
-        $messages = [
-            'name.unique' => 'Nama produk sudah digunakan, silakan gunakan nama lain.',
-
-        ];
-        $rules = [
-            'name' => 'required|string|max:255|unique:products,name,' . $product->id,
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
             'category_slug' => 'required|string|exists:product_categories,slug',
-            'slug' => 'required|string|max:255|unique:products,slug,' . $product->id,
-            'sku' => 'required|string|max:50|unique:products,sku,' . $product->id,
-            'description' => 'nullable|string',
+            'description' => 'required|string',
             'price' => 'required|numeric',
             'stock' => 'required|numeric',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-        ];
+        ]);
 
-        $validated = $request->validate($rules);
+        // Ambil ID kategori dari slug
+        $category = Categories::where('slug', $request->category_slug)->first();
 
-        $category = Categories::where('slug', $validated['category_slug'])->first();
+        // Update slug (buat baru dari nama, lalu pastikan unik)
+        $slug = Str::slug($validated['name']);
+        $originalSlug = $slug;
+        $counter = 1;
+        while (Product::where('slug', $slug)->where('id', '!=', $product->id)->exists()) {
+            $slug = $originalSlug . '-' . Str::random(3);
+        }
 
-        $slug = Str::slug($validated['slug'] ?? $validated['name']);
-
+        // Proses upload gambar jika ada
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $imagePath = public_path('images');
 
+            // Hapus gambar lama jika ada
             if ($product->image_url && file_exists(public_path($product->image_url))) {
                 unlink(public_path($product->image_url));
             }
 
+            // Pindahkan file gambar baru
             $image->move($imagePath, $imageName);
+
             $imageUrl = 'images/' . $imageName;
         } else {
-            $imageUrl = $product->image_url;
+            $imageUrl = $product->image_url; // Gunakan gambar lama jika tidak diubah
         }
 
+        // Update data produk
         $product->update([
             'name' => $validated['name'],
             'slug' => $slug,
-            'sku' => $validated['sku'],
-            'description' => $validated['description'] ?? null,
+            'description' => $validated['description'],
             'price' => $validated['price'],
             'stock' => $validated['stock'],
             'product_category_id' => $category->id,
             'image_url' => $imageUrl,
-            'is_active' => ((int) $validated['stock'] > 0),
+            'is_active' => ((int) $request->stock > 0),
         ]);
 
-        return redirect()->route('products.index')->with('successMessage', 'Data Berhasil Diperbarui');
+        return redirect()->route('products.index')->with('successMessage', 'Data Berhasil Disimpan');
     }
 
 
@@ -160,15 +157,7 @@ class ProductController extends Controller
 
         $product->delete();
 
-        return redirect()->route('products.index')->with('successMessage', 'Data Berhasil Dihapus');
-    }
-    public function toggleStatus($id)
-    {
-        $product = Product::findOrFail($id);
-        $product->is_active = !$product->is_active;
-        $product->save();
-
-        return redirect()->back()->with('success', 'Status produk berhasil diperbarui.');
+        return redirect()->route('products.index')->with('successMessage', 'Product deleted successfully.');
     }
     public function sync($id, Request $request)
       {

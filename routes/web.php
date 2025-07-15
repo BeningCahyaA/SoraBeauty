@@ -71,13 +71,4 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
 });
 
-// routes/web.php
-Route::middleware(['auth','verified'])
-      ->prefix('dashboard')->name('orders.')
-      ->group(function () {
-          Route::get('orders',          [OrderController::class,'index'])->name('index');
-          Route::patch('orders/{order}',[OrderController::class,'update'])->name('update');
-      });
-
-
 require __DIR__ . '/auth.php';

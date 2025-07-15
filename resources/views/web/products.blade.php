@@ -13,8 +13,8 @@
                     <div class="hero-search-container">
                         <form action="{{ url()->current() }}" method="GET" class="modern-search-form">
                             <div class="search-input-wrapper">
-                                <input type="text" name="search" class="form-control modern-search-input" 
-                                       placeholder="Search for beauty products..." value="{{ request('search') }}">
+                                <input type="text" name="search" class="form-control modern-search-input"
+                                    placeholder="Search for beauty products..." value="{{ request('search') }}">
                                 <button type="submit" class="btn btn-search-modern">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <circle cx="11" cy="11" r="8"></circle>
@@ -102,8 +102,8 @@
                 <div class="col-xl-3 col-lg-4 col-md-6 mb-4 product-item">
                     <div class="product-card-modern h-100">
                         <div class="product-image-container">
-                            <img src="{{ $product->image_url ? $product->image_url : 'https://via.placeholder.com/300x300?text=No+Image' }}" 
-                                 class="product-image" alt="{{ $product->name }}">
+                            <img src="{{ Storage::url($product->image) }}"
+                                alt="{{ $product->name }}" class="img-fluid">
                             <div class="product-overlay">
                                 <div class="product-actions">
                                     <button class="btn btn-action btn-wishlist" title="Add to Wishlist">
@@ -590,7 +590,8 @@
                 flex-direction: column;
             }
 
-            .btn-cart-add, .btn-view-details {
+            .btn-cart-add,
+            .btn-view-details {
                 width: 100%;
             }
         }
@@ -601,6 +602,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -611,10 +613,21 @@
             animation: fadeInUp 0.6s ease-out;
         }
 
-        .product-item:nth-child(1) { animation-delay: 0.1s; }
-        .product-item:nth-child(2) { animation-delay: 0.2s; }
-        .product-item:nth-child(3) { animation-delay: 0.3s; }
-        .product-item:nth-child(4) { animation-delay: 0.4s; }
+        .product-item:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .product-item:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .product-item:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .product-item:nth-child(4) {
+            animation-delay: 0.4s;
+        }
     </style>
 
     <script>
@@ -623,13 +636,13 @@
             button.addEventListener('click', function() {
                 const view = this.dataset.view;
                 const container = document.getElementById('products-container');
-                
+
                 // Remove active class from all buttons
                 document.querySelectorAll('.btn-view-toggle').forEach(btn => btn.classList.remove('active'));
-                
+
                 // Add active class to clicked button
                 this.classList.add('active');
-                
+
                 // Toggle view classes
                 if (view === 'list') {
                     container.classList.add('list-view');
@@ -647,7 +660,7 @@
                 const original = this.innerHTML;
                 this.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"></polyline></svg> Added!';
                 this.style.background = '#28a745';
-                
+
                 setTimeout(() => {
                     this.innerHTML = original;
                     this.style.background = '';
