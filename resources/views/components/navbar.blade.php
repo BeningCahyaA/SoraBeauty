@@ -74,7 +74,7 @@
 
                 <!-- Cart -->
                 <li class="nav-item me-3">
-                    <a href="{{ url('/cart') }}" class="nav-link position-relative cart-link">
+                    <a href="{{ route('cart.index') }}" class="nav-link position-relative cart-link">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="9" cy="21" r="1"></circle>
                             <circle cx="20" cy="21" r="1"></circle>
@@ -87,7 +87,7 @@
                 <!-- Authentication Links -->
                 @guest
                     <li class="nav-item me-2">
-                        <a class="btn btn-outline-primary btn-auth" href="{{ route('login') }}">
+                        <a class="btn btn-outline-primary btn-auth" href="{{ route('customer.login') }}">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
                                 <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
                                 <polyline points="10,17 15,12 10,7"></polyline>
@@ -97,7 +97,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-primary btn-auth" href="{{ route('register') }}">
+                        <a class="btn btn-primary btn-auth" href="{{ route('customer.register') }}">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                 <circle cx="12" cy="7" r="4"></circle>

@@ -10,6 +10,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\OrderController;
 
 Route::get('/', [HomepageController::class, 'index'])->name('home');
 Route::get('products', [HomepageController::class, 'products'])->name('products');
@@ -69,5 +70,14 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/password', 'settings.password')->name('settings.password');
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
 });
+
+// routes/web.php
+Route::middleware(['auth','verified'])
+      ->prefix('dashboard')->name('orders.')
+      ->group(function () {
+          Route::get('orders',          [OrderController::class,'index'])->name('index');
+          Route::patch('orders/{order}',[OrderController::class,'update'])->name('update');
+      });
+
 
 require __DIR__ . '/auth.php';
