@@ -11,6 +11,7 @@ use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\SearchController;
 
 Route::get('/', [HomepageController::class, 'index'])->name('home');
 Route::get('products', [HomepageController::class, 'products'])->name('products');
@@ -26,6 +27,7 @@ Route::patch('/products/{id}/toggle-status', [ProductController::class, 'toggleS
 
 Route::get('get.api.data', [ApiController::class, 'getApiData'])->name('get.api.data');
 
+Route::get('/search', [SearchController::class,'jump'])->name('search');
 
 Route::group(['prefix' => 'customer'], function () {
     //Semua route yang ada di dalam sini,diakses dengan prefix customer
